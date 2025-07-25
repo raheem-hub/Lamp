@@ -13,13 +13,13 @@ html, body {
     transition: background 0.5s ease-in-out;
 }
 
-/* Lamp shade */
+/* Lamp shade - bigger */
 .lamp {
-    width: 100px;
+    width: 150px;  /* was 100px */
     height: 0;
-    border-bottom: 100px solid #3b3b3b;
-    border-left: 50px solid transparent;
-    border-right: 50px solid transparent;
+    border-bottom: 150px solid #3b3b3b; /* was 100px */
+    border-left: 75px solid transparent; /* was 50px */
+    border-right: 75px solid transparent; /* was 50px */
     position: absolute;
     top: 0;
     left: 50%;
@@ -27,38 +27,37 @@ html, body {
     z-index: 3;
 }
 
-/* Bulb */
+/* Bulb - bigger and lower */
 .bulb {
     position: absolute;
-    top: 90px;
+    top: 140px; /* was 90px */
     left: 50%;
     transform: translateX(-50%);
-    width: 34px;
-    height: 34px;
+    width: 50px; /* was 34px */
+    height: 50px; /* was 34px */
     border-radius: 50%;
     background: radial-gradient(circle at 40% 40%, #fdfdfd, #dcdcdc 70%);
-    box-shadow: 0 0 10px rgba(255,255,200,0.2);
+    box-shadow: 0 0 12px rgba(255,255,200,0.25);
     transition: all 0.4s ease;
     z-index: 2;
 }
 
-/* Rope */
+/* Rope - longer and thicker */
 .string {
     position: absolute;
-   
-    top: 100px;
+    top: 149px; /* was 100px */
     left: 50%;
     transform-origin: top center;
-    width: 4px;
-    height: 120px;
+    width: 6px; /* was 4px */
+    height: 160px; /* was 120px */
     background: repeating-linear-gradient(
         to bottom,
         #c8a165 0,
-        #c8a165 6px,
-        #b08b57 6px,
-        #b08b57 12px
+        #c8a165 8px,
+        #b08b57 8px,
+        #b08b57 16px
     );
-    border-radius: 2px;
+    border-radius: 3px;
     cursor: grab;
     touch-action: none;
     z-index: 4;
@@ -71,25 +70,25 @@ html, body {
 .string::after {
     content: '';
     position: absolute;
-    bottom: -14px;
-    left: -6px;
-    width: 16px;
-    height: 16px;
+    bottom: -18px; /* was -14px */
+    left: -8px; /* was -6px */
+    width: 22px; /* was 16px */
+    height: 22px; /* was 16px */
     background: #b08b57;
     border-radius: 50%;
-    box-shadow: inset -2px -2px 4px rgba(0,0,0,0.3);
+    box-shadow: inset -2px -2px 5px rgba(0,0,0,0.4);
 }
 
-/* Light beam */
+/* Light beam - bigger proportionally */
 .light {
     position: absolute;
-    top: 90px;
+    top: 100px; /* was 90px */
     left: 50%;
     transform: translateX(-50%);
-    border: 715px solid transparent;
+    border: 900px solid transparent; /* was 715px */
     border-top: none;
     border-bottom: 100vh solid rgba(255, 255, 136, 0.35);
-    filter: blur(80px);
+    filter: blur(90px); /* was 80px */
     opacity: 0;
     transition: opacity 0.7s ease;
     z-index: 1;
@@ -106,5 +105,5 @@ html, body {
 
 .on .bulb {
     background: radial-gradient(circle at 40% 40%, #fffbc1, #f4e87c 70%);
-    box-shadow: 0 0 20px #FAEB83, 0 0 60px rgba(255,255,150,0.8), 0 0 150px rgba(255,240,180,0.5);
+    box-shadow: 0 0 28px #FAEB83, 0 0 80px rgba(255,255,150,0.8), 0 0 180px rgba(255,240,180,0.5);
 }
