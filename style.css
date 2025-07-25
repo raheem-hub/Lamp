@@ -40,16 +40,17 @@ html, body {
     box-shadow: 0 0 12px rgba(255,255,200,0.25);
     transition: all 0.4s ease;
     z-index: 2;
+     pointer-events: none;
 }
 
-/* Rope - longer and thicker */
+/* Rope - positioned above the bulb */
 .string {
     position: absolute;
-    top: 149px; /* was 100px */
-    left: 50%;
+    top: 100px; /* start from the lamp's top */
+    left: 70%;
     transform-origin: top center;
     width: 6px; /* was 4px */
-    height: 160px; /* was 120px */
+    height: 260px; /* was 160px → now long enough to reach the bulb */
     background: repeating-linear-gradient(
         to bottom,
         #c8a165 0,
@@ -60,8 +61,9 @@ html, body {
     border-radius: 3px;
     cursor: grab;
     touch-action: none;
-    z-index: 4;
+    z-index: 2;
 }
+
 
 .string:active {
     cursor: grabbing;
@@ -70,14 +72,15 @@ html, body {
 .string::after {
     content: '';
     position: absolute;
-    bottom: -18px; /* was -14px */
-    left: -8px; /* was -6px */
-    width: 22px; /* was 16px */
-    height: 22px; /* was 16px */
+    bottom: -18px; /* stays same */
+    left: -8px;
+    width: 22px;
+    height: 22px;
     background: #b08b57;
     border-radius: 50%;
     box-shadow: inset -2px -2px 5px rgba(0,0,0,0.4);
 }
+
 
 /* Light beam - bigger proportionally */
 .light {

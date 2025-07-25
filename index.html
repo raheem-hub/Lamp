@@ -125,9 +125,10 @@
     }
 
     function applyTransform() {
-        rope.style.transform = `translateX(30px) rotate(${currentAngle}deg) scaleY(${currentStretch})`;
-        bulb.style.transform = `translateX(-50%) rotate(${currentAngle}deg)`;
-    }
+            rope.style.transform = `rotate(${currentAngle}deg) scaleY(${currentStretch})`;
+            bulb.style.transform = `translateX(-50%) rotate(${currentAngle}deg)`;
+        }
+
 
     rope.addEventListener('pointerdown', startDrag);
     document.addEventListener('pointermove', onMove);
