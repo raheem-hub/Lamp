@@ -15,9 +15,8 @@
     <div class="string"></div>
     <div class="light"></div>
 </div>
-
 <script>
-  const rope = document.querySelector('.string');
+    const rope = document.querySelector('.string');
     const bulb = document.querySelector('.bulb');
     const lampContainer = document.getElementById('lamp-container');
     const lamp = document.querySelector('.lamp');
@@ -29,8 +28,8 @@
     let velocityStretch = 0;
 
     let lastX = 0, lastY = 0;
-    let centerX = window.innerWidth / 2;
-    let centerY = 100;
+    let centerX = 0;
+    let centerY = 0;
 
     let oscillationPhase = 0;
     let wiggleAmplitudeAngle = 1.2;
@@ -42,6 +41,12 @@
 
     function startDrag(e) {
         isDragging = true;
+
+        // ✅ Calculate actual center of rope for rotation pivot
+        const ropeRect = rope.getBoundingClientRect();
+        centerX = ropeRect.left + ropeRect.width / 2;
+        centerY = ropeRect.top; // top pivot point
+
         const pos = getPosition(e);
         lastX = pos.x;
         lastY = pos.y;
@@ -54,12 +59,15 @@
         const dx = pos.x - centerX;
         const dy = pos.y - centerY;
 
+        // Calculate rotation angle based on mouse position
         let angle = Math.atan2(dy, dx) * (180 / Math.PI) - 90;
-        angle = Math.max(-80, Math.min(80, angle));
+        angle = Math.max(-80, Math.min(80, angle)); // limit swing
 
+        // Stretch based on vertical pull
         let stretch = 1 + Math.max(0, dy / 120);
-        stretch = Math.min(2.0, stretch);
+        stretch = Math.min(1.5, stretch);
 
+        // Velocity for realistic release animation
         let deltaX = pos.x - lastX;
         let deltaY = pos.y - lastY;
 
@@ -115,6 +123,7 @@
         }
         animate();
 
+        // ✅ Toggle ON/OFF if pulled enough
         if (currentStretch > 1.4) {
             lampContainer.classList.toggle('on');
             lampContainer.classList.toggle('off');
@@ -125,13 +134,12 @@
 
     function applyTransform() {
         rope.style.transform = `rotate(${currentAngle}deg) scaleY(${currentStretch})`;
-        bulb.style.transform = `translateX(-50%) rotate(${currentAngle}deg)`;
+        bulb.style.transform = `translateX(-50%) rotate(${currentAngle}deg)`; // keeps bulb aligned
     }
 
     rope.addEventListener('pointerdown', startDrag);
     document.addEventListener('pointermove', onMove);
     document.addEventListener('pointerup', endDrag);
-
 </script>
 
 </body>
