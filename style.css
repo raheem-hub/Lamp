@@ -1,0 +1,158 @@
+html, body {
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+  background: #111;
+  transition: background 0.5s ease-in-out;
+}
+
+#turnon {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #111;
+  transition: background 0.5s ease-in-out;
+  position: relative;
+}
+
+/* Lamp Structure */
+.lamp, .turnoff {
+  width: 100px;
+  height: 100px;
+  top: 0;
+  left: 50%;
+  margin-left: -100px;
+  position: absolute;
+  border-bottom: 100px solid #444;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  height: 0;
+  z-index: 11;
+}
+
+.turnoff {
+  display: none;
+}
+
+/* Bulb */
+.bulb {
+  position: absolute;
+  top: 90px;
+  left: 50%;
+  height: 32px;
+  width: 32px;
+  margin-left: -16px;
+  background: #777;
+  border-radius: 50%;
+  z-index: 9;
+  transition: background 0.3s ease;
+  box-shadow: 0 0 10px rgba(255,255,200,0.1);
+}
+
+/* Pull String */
+.string {
+  position: absolute;
+  top: 90px;
+  left: 50%;
+  margin-left: 25px;
+  height: 120px;
+  width: 4px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #c8a165 0,
+    #c8a165 6px,
+    #b08b57 6px,
+    #b08b57 12px
+  ); /* Rope texture */
+  border-radius: 2px;
+  display: block;
+  z-index: 10;
+  transform-origin: top center;
+  transition: transform 0.3s ease-out;
+  animation: sway 4s ease-in-out infinite; /* Gentle swing effect */
+}
+
+/* Add a knot or ball at the end */
+.string::after {
+  content: '';
+  position: absolute;
+  bottom: -14px;
+  left: -6px;
+  width: 16px;
+  height: 16px;
+  background: #b08b57;
+  border-radius: 50%;
+  box-shadow: inset -2px -2px 4px rgba(0,0,0,0.3);
+}
+/* Light Beam */
+.light {
+  width: 50px;
+  height: 0;
+  top: 90px;
+  left: 50%;
+  margin: -135px 0 0 -740px;
+  border: 715px solid transparent;
+  border-top: none;
+  border-bottom: 1400px solid rgba(255, 255, 136, 0.6);
+  opacity: 0;
+  position: absolute;
+  transition: opacity 0.5s ease-in-out;
+  filter: blur(40px);
+}
+
+/* When Light is ON */
+#turnon:target {
+  background: #222;
+}
+/* When pulling (elastic effect) */
+#turnon:target .string {
+  animation: pullElastic 0.6s ease forwards, sway 4s ease-in-out infinite 0.7s;
+}
+#turnon:target .light {
+  opacity: 0.4;
+  animation: lightGlow 3s infinite alternate;
+}
+
+#turnon:target .bulb {
+  background: #FAEB83;
+  box-shadow: 0 0 20px #FAEB83, 0 0 50px #FAEB83;
+  animation: bulbFlicker 1.2s ease-in-out 2;
+}
+
+#turnon:target .turnoff {
+  display: block;
+}
+
+#turnon:target .lamp {
+  display: none;
+}
+
+#turnon:target .string {
+  animation: pull 500ms ease forwards;
+}
+
+/* Animations */
+@-webkit-keyframes pull {
+  0% { height: 100px; background: #666; }
+  50% { height: 120px; transform: translateY(10px); }
+  100% { height: 100px; transform: translateY(0); }
+}
+
+@keyframes pull {
+  0% { height: 100px; background: #666; }
+  50% { height: 120px; transform: translateY(10px); }
+  100% { height: 100px; transform: translateY(0); }
+}
+
+@keyframes bulbFlicker {
+  0%, 100% { opacity: 1; }
+  20% { opacity: 0.7; }
+  40% { opacity: 0.9; }
+  60% { opacity: 0.5; }
+  80% { opacity: 0.8; }
+}
+
+@keyframes lightGlow {
+  0% { filter: blur(30px); opacity: 0.3; }
+  100% { filter: blur(50px); opacity: 0.5; }
+}
