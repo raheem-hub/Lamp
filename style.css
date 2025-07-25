@@ -15,33 +15,56 @@ html, body {
 
 /* Lamp shade - bigger */
 .lamp {
-    width: 150px;  /* was 100px */
+    width: 150px;
     height: 0;
-    border-bottom: 150px solid #3b3b3b; /* was 100px */
-    border-left: 75px solid transparent; /* was 50px */
-    border-right: 75px solid transparent; /* was 50px */
+    border-bottom: 150px solid transparent; /* We'll use background instead of border */
+    border-left: 75px solid transparent;
+    border-right: 75px solid transparent;
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
     z-index: 3;
+
+    /* Paper-like gradient */
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%),
+                linear-gradient(135deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent);
+    background-size: 20px 20px;
+
+    border-bottom: 150px solid #f8f5e3; /* Soft warm paper color */
+    border-radius: 6px; /* Slight curve for realism */
+    filter: brightness(1.05);
 }
 
 /* Bulb - bigger and lower */
+/* Bulb - realistic moon when OFF */
 .bulb {
     position: absolute;
-    top: 140px; /* was 90px */
+    top: 130px;
     left: 50%;
     transform: translateX(-50%);
-    width: 50px; /* was 34px */
-    height: 50px; /* was 34px */
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    background: radial-gradient(circle at 40% 40%, #fdfdfd, #dcdcdc 70%);
-    box-shadow: 0 0 12px rgba(255,255,200,0.25);
-    transition: all 0.4s ease;
+    background: #e6e6e6;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+    transition: all 0.5s ease;
     z-index: 2;
-     pointer-events: none;
+    pointer-events: none;
+
+    /* Crater effect with multiple radial gradients */
+    background-image:
+        radial-gradient(circle at 20% 25%, #d9d9d9 2%, transparent 4%),
+        radial-gradient(circle at 70% 30%, #cfcfcf 3%, transparent 5%),
+        radial-gradient(circle at 40% 60%, #d0d0d0 4%, transparent 6%),
+        radial-gradient(circle at 60% 70%, #c5c5c5 2%, transparent 5%),
+        radial-gradient(circle at 80% 50%, #bfbfbf 3%, transparent 6%),
+        radial-gradient(circle at 30% 40%, #d8d8d8 4%, transparent 6%),
+        radial-gradient(circle at 10% 60%, #cccccc 3%, transparent 5%);
+    background-color: #e6e6e6;
+    background-blend-mode: normal;
 }
+
 
 /* Rope - positioned above the bulb */
 .string {
@@ -107,6 +130,17 @@ html, body {
 }
 
 .on .bulb {
-    background: radial-gradient(circle at 40% 40%, #fffbc1, #f4e87c 70%);
-    box-shadow: 0 0 28px #FAEB83, 0 0 80px rgba(255,255,150,0.8), 0 0 180px rgba(255,240,180,0.5);
+    background-color: #f9e88f;
+    background-image:
+        radial-gradient(circle at 20% 25%, #f1da75 2%, transparent 4%),
+        radial-gradient(circle at 70% 30%, #eed165 3%, transparent 5%),
+        radial-gradient(circle at 40% 60%, #f5e07a 4%, transparent 6%),
+        radial-gradient(circle at 60% 70%, #ebd76a 2%, transparent 5%),
+        radial-gradient(circle at 80% 50%, #e7ce5a 3%, transparent 6%),
+        radial-gradient(circle at 30% 40%, #f0d86f 4%, transparent 6%),
+        radial-gradient(circle at 10% 60%, #ecd25d 3%, transparent 5%);
+    box-shadow:
+        0 0 28px #FAEB83,
+        0 0 80px rgba(255,255,150,0.8),
+        0 0 180px rgba(255,240,180,0.5);
 }
