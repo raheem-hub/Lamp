@@ -13,59 +13,54 @@ html, body {
     transition: background 0.5s ease-in-out;
 }
 
-
-/* .lamp {
-    width: 150px;
-    height: 0;
-    border-left: 75px solid transparent !important;
-    border-right: 75px solid transparent !important;
-    border-bottom: 150px solid #f8f5e3; 
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 3;
-    filter: brightness(1);
-    transition: all 0.5s ease;
-    position: relative;
-    overflow: hidden;
-    border-radius: 6px;  
-} */
 .lamp {
-    width: 280px;       /* Wide base */
-    height: 180px;      /* Moderate height */
-    background: #f8f5e3; /* Paper color */
+    width: 280px;
+    height: 180px;
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 3;
-
-    /* Realistic trapezoid shape */
+    background: linear-gradient(to bottom, #f8f5e3 0%, #e6e2d0 100%);
     clip-path: polygon(15% 0%, 85% 0%, 100% 100%, 0% 100%);
-    
-    border-radius: 12px; /* Subtle curve */
-    transition: all 0.5s ease;
-    filter: brightness(1);
-    box-shadow: inset 0 -10px 20px rgba(0,0,0,0.2);
-}
-.lamp.off {
-    background: #dcd8c8; /* darker paper */
-    box-shadow: inset 0 -10px 25px rgba(0,0,0,0.4);
+    border-radius: 12px;
+    box-shadow: inset 0 -10px 20px rgba(0,0,0,0.15), 0 6px 18px rgba(0,0,0,0.3);
+    overflow: hidden;
+    position: relative;
+    z-index:3;
 }
 
+/* Add the smooth bottom curve */
+.lamp::after {
+    content: "";
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: inherit;
+    border-radius: 50%;
+    box-shadow: inset 0 -5px 10px rgba(0,0,0,0.2);
+}
+
+/* Off State */
+.lamp.off {
+    background: #dcd8c8;
+    box-shadow: inset 0 -15px 30px rgba(0,0,0,0.4), 0 6px 18px rgba(0,0,0,0.35);
+}
+
+/* On State */
 .lamp.on {
-    background: #fff6d4; /* warmer paper */
+    background: #fff6d4;
     box-shadow:
-        inset 0 -20px 40px rgba(255,220,150,0.5), /* inside glow */
-        0 15px 45px rgba(255,230,160,0.6);       /* outside glow */
+        inset 0 -25px 40px rgba(255, 230, 160, 0.5),
+        0 15px 45px rgba(255, 230, 160, 0.6);
 }
 
 
 /* Bulb - realistic moon when OFF */
 .bulb {
     position: absolute;
-    top: 165px;
+    top: 155px;
     left: 50%;
     transform: translateX(-50%);
     width: 50px;
@@ -74,7 +69,7 @@ html, body {
     background: #e6e6e6;
     box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
     transition: all 0.5s ease;
-    z-index: 2;
+    z-index: 1;
     pointer-events: none;
 
     /* Crater effect with multiple radial gradients */
