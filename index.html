@@ -30,6 +30,11 @@
     let centerX = window.innerWidth / 2;
     let centerY = 100;
 
+    // For oscillation
+    let oscillationPhase = 0;
+    let wiggleAmplitudeAngle = 1.2;
+    let wiggleAmplitudeStretch = 0.05;
+
     function getPosition(e) {
         return { x: e.clientX, y: e.clientY };
     }
@@ -48,21 +53,19 @@
         const dx = pos.x - centerX;
         const dy = pos.y - centerY;
 
-        // Angle calc
         let angle = Math.atan2(dy, dx) * (180 / Math.PI) - 90;
-        angle = Math.max(-60, Math.min(60, angle));
+        angle = Math.max(-80, Math.min(80, angle));
 
-        // Stretch calc
-        let stretch = 1 + Math.max(0, dy / 150); // more sensitive
-        stretch = Math.min(2.2, stretch); // allow up to 220% length
+        // Allow more stretch
+        let stretch = 1 + Math.max(0, dy / 120);
+        stretch = Math.min(2.0, stretch);
 
-
-        // Calculate velocity based on movement speed
+        // Velocity for bounce
         let deltaX = pos.x - lastX;
         let deltaY = pos.y - lastY;
 
-        velocityAngle = deltaX * 0.2;    // horizontal flick adds angle velocity
-        velocityStretch = deltaY * 0.015; // vertical flick adds stretch velocity
+        velocityAngle = deltaX * 0.2;
+        velocityStretch = deltaY * 0.02;
 
         lastX = pos.x;
         lastY = pos.y;
@@ -77,26 +80,36 @@
         if (!isDragging) return;
         isDragging = false;
 
-        let angleSpring = 0.07;
-        let stretchSpring = 0.25;
-        let damping = 0.88;
+        let angleSpring = 0.06;
+        let stretchSpring = 0.15;
+        let damping = 0.90;
+
+        wiggleAmplitudeAngle = 1.5; // stronger wiggle at start
+        wiggleAmplitudeStretch = 0.05;
 
         function animate() {
-            // Swing effect
+            oscillationPhase += 0.15;
+
+            // Physics for angle
             let angleForce = (0 - currentAngle) * angleSpring;
             velocityAngle += angleForce;
             velocityAngle *= damping;
-            currentAngle += velocityAngle;
+            currentAngle += velocityAngle + Math.sin(oscillationPhase) * wiggleAmplitudeAngle;
 
-            // Bounce effect
+            // Physics for stretch
             let stretchForce = (1 - currentStretch) * stretchSpring;
             velocityStretch += stretchForce;
             velocityStretch *= damping;
-            currentStretch += velocityStretch;
+            currentStretch += velocityStretch + Math.sin(oscillationPhase + Math.PI / 2) * wiggleAmplitudeStretch;
+
+            // Reduce wiggle amplitude over time
+            wiggleAmplitudeAngle *= 0.93;
+            wiggleAmplitudeStretch *= 0.93;
 
             applyTransform();
 
-            if (Math.abs(velocityAngle) > 0.01 || Math.abs(velocityStretch) > 0.01) {
+            if ((Math.abs(velocityAngle) > 0.01 || Math.abs(velocityStretch) > 0.01) &&
+                (wiggleAmplitudeAngle > 0.01 || wiggleAmplitudeStretch > 0.01)) {
                 requestAnimationFrame(animate);
             } else {
                 currentAngle = 0;
@@ -106,7 +119,7 @@
         }
         animate();
 
-        if (currentStretch > 1.2) {
+        if (currentStretch > 1.4) {
             lampContainer.classList.toggle('on');
         }
     }
@@ -120,7 +133,6 @@
     document.addEventListener('pointermove', onMove);
     document.addEventListener('pointerup', endDrag);
 </script>
-
 
 </body>
 
