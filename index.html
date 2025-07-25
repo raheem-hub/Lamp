@@ -15,89 +15,113 @@
         <div class="string"></div>
         <div class="light"></div>
     </div>
+<script>
+    const rope = document.querySelector('.string');
+    const bulb = document.querySelector('.bulb');
+    const lampContainer = document.getElementById('lamp-container');
 
-    <script>
-        const rope = document.querySelector('.string');
-        const bulb = document.querySelector('.bulb');
-        const light = document.querySelector('.light');
-        const lampContainer = document.getElementById('lamp-container');
+    let isDragging = false;
+    let currentAngle = 0;
+    let currentStretch = 1;
+    let velocityAngle = 0;
+    let velocityStretch = 0;
 
-        let isDragging = false;
-        let startX, startY;
-        let currentAngle = 0;
-        let currentStretch = 1;
-        let velocityAngle = 0;
-        let velocityStretch = 0;
-        let centerX = window.innerWidth / 2;
-        let centerY = 100; // top pivot
+    let lastX = 0, lastY = 0;
+    let centerX = window.innerWidth / 2;
+    let centerY = 100;
 
-        // Mouse down to start pulling
-        rope.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startX = e.clientX;
-            startY = e.clientY;
-        });
+    function getPosition(e) {
+        return { x: e.clientX, y: e.clientY };
+    }
 
-        document.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
+    function startDrag(e) {
+        isDragging = true;
+        const pos = getPosition(e);
+        lastX = pos.x;
+        lastY = pos.y;
+    }
 
-            const dx = e.clientX - centerX;
-            const dy = e.clientY - centerY;
+    function onMove(e) {
+        if (!isDragging) return;
 
-            // Correct angle calculation
-            let angle = Math.atan2(dy, dx) * (180 / Math.PI) - 90;
+        const pos = getPosition(e);
+        const dx = pos.x - centerX;
+        const dy = pos.y - centerY;
 
-            if (angle > 60) angle = 60;
-            if (angle < -60) angle = -60;
+        // Angle calc
+        let angle = Math.atan2(dy, dx) * (180 / Math.PI) - 90;
+        angle = Math.max(-60, Math.min(60, angle));
 
-            // Stretch when pulling down
-            let stretch = 1 + Math.max(0, dy / 200);
-            if (stretch > 1.4) stretch = 1.4;
+        // Stretch calc
+        let stretch = 1 + Math.max(0, dy / 150); // more sensitive
+        stretch = Math.min(2.2, stretch); // allow up to 220% length
 
-            currentAngle = angle;
-            currentStretch = stretch;
+
+        // Calculate velocity based on movement speed
+        let deltaX = pos.x - lastX;
+        let deltaY = pos.y - lastY;
+
+        velocityAngle = deltaX * 0.2;    // horizontal flick adds angle velocity
+        velocityStretch = deltaY * 0.015; // vertical flick adds stretch velocity
+
+        lastX = pos.x;
+        lastY = pos.y;
+
+        currentAngle = angle;
+        currentStretch = stretch;
+
+        applyTransform();
+    }
+
+    function endDrag() {
+        if (!isDragging) return;
+        isDragging = false;
+
+        let angleSpring = 0.07;
+        let stretchSpring = 0.25;
+        let damping = 0.88;
+
+        function animate() {
+            // Swing effect
+            let angleForce = (0 - currentAngle) * angleSpring;
+            velocityAngle += angleForce;
+            velocityAngle *= damping;
+            currentAngle += velocityAngle;
+
+            // Bounce effect
+            let stretchForce = (1 - currentStretch) * stretchSpring;
+            velocityStretch += stretchForce;
+            velocityStretch *= damping;
+            currentStretch += velocityStretch;
 
             applyTransform();
-        });
 
-        document.addEventListener('mouseup', () => {
-            if (!isDragging) return;
-            isDragging = false;
-
-            // Animate back to normal using elastic effect
-            function animate() {
-                // Spring physics
-                velocityAngle += (0 - currentAngle) * 0.08;
-                velocityAngle *= 0.85;
-                currentAngle += velocityAngle;
-
-                velocityStretch += (1 - currentStretch) * 0.15;
-                velocityStretch *= 0.75;
-                currentStretch += velocityStretch;
-
+            if (Math.abs(velocityAngle) > 0.01 || Math.abs(velocityStretch) > 0.01) {
+                requestAnimationFrame(animate);
+            } else {
+                currentAngle = 0;
+                currentStretch = 1;
                 applyTransform();
-
-                if (Math.abs(currentAngle) > 0.2 || Math.abs(currentStretch - 1) > 0.01) {
-                    requestAnimationFrame(animate);
-                } else {
-                    currentAngle = 0;
-                    currentStretch = 1;
-                    applyTransform();
-                }
             }
-            animate();
-
-            // Toggle lamp if pulled down enough
-            if (currentStretch > 1.2) {
-                lampContainer.classList.toggle('on');
-            }
-        });
-
-        function applyTransform() {
-            rope.style.transform = `rotate(${currentAngle}deg) scaleY(${currentStretch})`;
-            bulb.style.transform = `translateX(-50%) rotate(${currentAngle}deg)`;
         }
-    </script>
+        animate();
+
+        if (currentStretch > 1.2) {
+            lampContainer.classList.toggle('on');
+        }
+    }
+
+    function applyTransform() {
+        rope.style.transform = `translateX(30px) rotate(${currentAngle}deg) scaleY(${currentStretch})`;
+        bulb.style.transform = `translateX(-50%) rotate(${currentAngle}deg)`;
+    }
+
+    rope.addEventListener('pointerdown', startDrag);
+    document.addEventListener('pointermove', onMove);
+    document.addEventListener('pointerup', endDrag);
+</script>
+
+
 </body>
 
 </html>

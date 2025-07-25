@@ -1,109 +1,110 @@
 html, body {
-  margin: 0;
-  height: 100%;
-  overflow: hidden;
-  background: #111;
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #111;
 }
 
 #lamp-container {
-  width: 100%;
-  height: 100%;
-  background: #111;
-  position: relative;
-  transition: background 0.5s ease-in-out;
+    width: 100%;
+    height: 100%;
+    background: #111;
+    position: relative;
+    transition: background 0.5s ease-in-out;
 }
 
 /* Lamp shade */
 .lamp {
-  width: 100px;
-  height: 0;
-  border-bottom: 100px solid #3b3b3b;
-  border-left: 50px solid transparent;
-  border-right: 50px solid transparent;
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
+    width: 100px;
+    height: 0;
+    border-bottom: 100px solid #3b3b3b;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
 }
 
 /* Bulb */
 .bulb {
-  position: absolute;
-  top: 90px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 40% 40%, #fdfdfd, #dcdcdc 70%);
-  box-shadow: 0 0 10px rgba(255,255,200,0.2);
-  transition: all 0.4s ease;
-  z-index: 2;
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #fdfdfd, #dcdcdc 70%);
+    box-shadow: 0 0 10px rgba(255,255,200,0.2);
+    transition: all 0.4s ease;
+    z-index: 2;
 }
 
 /* Rope */
 .string {
-  position: absolute;
-  margin-left: 30px;;
-  top: 100px;
-  left: 50%;
-  transform-origin: top center; /* Important for swing */
-  width: 4px;
-  height: 120px;
-  background: repeating-linear-gradient(
-    to bottom,
-    #c8a165 0,
-    #c8a165 6px,
-    #b08b57 6px,
-    #b08b57 12px
-  );
-  border-radius: 2px;
-  cursor: grab;
-  z-index: 4;
+    position: absolute;
+   
+    top: 100px;
+    left: 50%;
+    transform-origin: top center;
+    width: 4px;
+    height: 120px;
+    background: repeating-linear-gradient(
+        to bottom,
+        #c8a165 0,
+        #c8a165 6px,
+        #b08b57 6px,
+        #b08b57 12px
+    );
+    border-radius: 2px;
+    cursor: grab;
+    touch-action: none;
+    z-index: 4;
 }
 
 .string:active {
-  cursor: grabbing;
+    cursor: grabbing;
 }
 
 .string::after {
-  content: '';
-  position: absolute;
-  bottom: -14px;
-  left: -6px;
-  width: 16px;
-  height: 16px;
-  background: #b08b57;
-  border-radius: 50%;
-  box-shadow: inset -2px -2px 4px rgba(0,0,0,0.3);
+    content: '';
+    position: absolute;
+    bottom: -14px;
+    left: -6px;
+    width: 16px;
+    height: 16px;
+    background: #b08b57;
+    border-radius: 50%;
+    box-shadow: inset -2px -2px 4px rgba(0,0,0,0.3);
 }
 
 /* Light beam */
 .light {
-  position: absolute;
-  top: 90px;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 715px solid transparent;
-  border-top: none;
-  border-bottom: 100vh solid rgba(255, 255, 136, 0.35);
-  filter: blur(80px);
-  opacity: 0;
-  transition: opacity 0.7s ease;
-  z-index: 1;
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 715px solid transparent;
+    border-top: none;
+    border-bottom: 100vh solid rgba(255, 255, 136, 0.35);
+    filter: blur(80px);
+    opacity: 0;
+    transition: opacity 0.7s ease;
+    z-index: 1;
 }
 
 /* ON state */
 .on {
-  background: #222;
+    background: #222;
 }
 
 .on .light {
-  opacity: 0.6;
+    opacity: 0.6;
 }
 
 .on .bulb {
-  background: radial-gradient(circle at 40% 40%, #fffbc1, #f4e87c 70%);
-  box-shadow: 0 0 20px #FAEB83, 0 0 60px rgba(255,255,150,0.8), 0 0 150px rgba(255,240,180,0.5);
+    background: radial-gradient(circle at 40% 40%, #fffbc1, #f4e87c 70%);
+    box-shadow: 0 0 20px #FAEB83, 0 0 60px rgba(255,255,150,0.8), 0 0 150px rgba(255,240,180,0.5);
 }
